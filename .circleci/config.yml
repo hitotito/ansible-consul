@@ -1,0 +1,20 @@
+---
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+    environment:
+      ANSIBLE_ROLES_PATH: /root/
+    steps:
+      - checkout
+      - run:
+          name: Update debian repository
+          command: apt-get update
+      - run:
+          name: Install ansible
+          command: apt-get install -y ansible
+      - run:
+          name: Run test playbook
+          command: ansible-playbook test/test.yml
