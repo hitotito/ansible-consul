@@ -5,7 +5,7 @@
       file:
         path: "{{ item }}"
         state: directory
-        mode: 0750
+        mode: 0755
       with_items:
         - "{{ consul_conf_template_tmpld_dir }}"
         - "{{ consul_templates_dir }}"
