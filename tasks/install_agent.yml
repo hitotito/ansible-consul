@@ -71,6 +71,16 @@
   notify:
     - restart consul-agent
 
+- name: Copy check scripts
+  copy:
+    src: "{{ item }}"
+    dest: "{{ consul_bin_dir }}"
+    mode: 0755
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+  with_items:
+    - "check_systemd_active.py"
+
 - name: Enable consul-agent systemd service
   systemd:
     name: consul-agent

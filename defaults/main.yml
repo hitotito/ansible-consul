@@ -33,8 +33,10 @@ consul_template_mirror: https://releases.hashicorp.com/consul-template
 # consul config defaults
 consul_bind_ip_range: 192.168.101.0/24
 consul_datacenter: SFO01
+consul_enable_script_check: true
 consul_log_level: INFO
 consul_ports_http: 8500
+consul_server_ui: true
 
 # to enable consul gossip encryption simply define a variable:
 # consul_gossip_encryption_key: "o3GQxsj0skowrZamiScm6g=="
