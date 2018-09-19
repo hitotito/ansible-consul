@@ -74,5 +74,6 @@
 - name: Enable consul-agent systemd service
   systemd:
     name: consul-agent
+    state: started
     daemon_reload: yes
     enabled: yes
