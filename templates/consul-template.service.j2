@@ -7,6 +7,7 @@ After=network-online.target consul-agent.service vault.service
 User=root
 Group=root
 EnvironmentFile=-/etc/sysconfig/consul-template
+PermissionsStartOnly=true
 ExecStart={{ consul_os_install_dir }}/consul-template $OPTIONS -config={{ consul_conf_template_dir }}/consul-template.hcl -config={{ consul_conf_template_tmpld_dir }}
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process

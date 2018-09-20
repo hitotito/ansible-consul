@@ -18,7 +18,6 @@
         - "{{ consul_conf_agent_dir }}"
         - "{{ consul_data_dir }}"
         - "{{ consul_systemd_dir }}"
-        - "{{ consul_os_pid_dir }}"
       file:
         path: "{{ item }}"
         state: directory

@@ -5,11 +5,13 @@ Requires=network-online.target
 [Service]
 User={{ consul_user }}
 Group={{ consul_group }}
-PIDFile={{ consul_os_pid_dir }}/consul-agent.pid
 PermissionsStartOnly=true
+PIDFile={{ consul_os_pid_dir }}/consul/consul-agent.pid
+ExecStartPre=-/bin/mkdir -p {{ consul_os_pid_dir }}/consul
+ExecStartPre=/bin/chown -R {{ consul_user }}:{{ consul_group }} {{ consul_os_pid_dir }}/consul/
 ExecStart={{ consul_os_install_dir }}/consul agent \
     -config-dir={{ consul_conf_agent_dir }} \
-    -pid-file={{ consul_os_pid_dir }}/consul-agent.pid
+    -pid-file={{ consul_os_pid_dir }}/consul/consul-agent.pid
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 KillSignal=SIGTERM

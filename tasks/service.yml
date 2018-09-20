@@ -1,4 +1,35 @@
 ---
+# User of this task list will pass in following variables:
+#   consul_service_name [string]
+#   consul_service_tags [list]
+#   consul_service_check ['script', 'http']
+#
+#HTTP Check
+#   consul_service_ports [list]
+#
+# Script Check
+#   consul_service_check_name [list]
+#   consul_service_check_script_args [list]
+# 
+# Example)
+# - include_role:
+#     name: hitotito.consul
+#     tasks_from: service
+#     private: yes
+#   vars:
+#     consul_service_name: "haproxy"
+#     consul_service_tags: ["haproxy", "lb"]
+#     consul_service_check: "http"
+#     consul_service_ports: [8001]
+#
+#   ... vars for script check
+#     consul_service_check: "script"
+#     consul_service_check_name: "systemd service is up"
+#     consul_service_check_script_args: ['check_systemd_active.py', 'haproxy']
+#
+# Current Limitation
+#   - http check and script cannot be mix
+#   - cannot have multiple checks per service using this task list
 - name: install consul service definition
   block:
   - name: ensure conf directory exists

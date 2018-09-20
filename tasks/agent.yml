@@ -26,4 +26,5 @@
   vars:
     consul_service_name: "consul-ui"
     consul_service_tags: ["consul-ui"]
+    consul_service_check: "http"
     consul_service_ports: ["{{ consul_ports_http }}"]
