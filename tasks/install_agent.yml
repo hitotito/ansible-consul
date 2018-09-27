@@ -40,6 +40,8 @@
         creates: '{{consul_bin_dir}}/consul'
         group: '{{ consul_group }}'
         owner: '{{ consul_user }}'
+      notify:
+        - restart consul-agent
   always:
     - name: cleanup
       file:
