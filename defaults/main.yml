@@ -26,7 +26,7 @@ consul_mirror : https://releases.hashicorp.com/consul
 
 # consul-template binary
 consul_template_force_reinstall: false
-consul_template_ver: '0.19.4'
+consul_template_ver: '0.19.5'
 consul_template_platform: linux_amd64
 consul_template_mirror: https://releases.hashicorp.com/consul-template
 
@@ -214,6 +214,11 @@ consul_checksums:
 
 
 # TODO - pull this information from mirror
+# NOTE: consul-template use .tgz archive format
 consul_template_checksums:
+  # https://releases.hashicorp.com/consul-template/0.19.4/consul-template_0.19.4_SHA256SUMS
   '0.19.4':
     linux_amd64: sha256:d8f349a1cc827f3bfe3c707a361739ba91dbb6c16dad445cb0226d34be19c47e
+  # https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_SHA256SUMS
+  '0.19.5':
+    linux_amd64: sha256:39f4fc2ffaa00e0a7504f531f922d9d39dd29520c03dc0abde46835ebd52c647

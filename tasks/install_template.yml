@@ -35,7 +35,8 @@
         creates: "{{ consul_bin_dir }}/consul-template"
         group: '{{ consul_group }}'
         owner: '{{ consul_user }}'
-
+      notify:
+        - restart consul-template
   always:
     - name: Cleanup
       file:
