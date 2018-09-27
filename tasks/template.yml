@@ -1,7 +1,7 @@
 ---
-- name: Install consul service template configuration
+- name: TEMPLATE_DEF | Install consul service template configuration
   block:
-    - name: Ensure template tmpl.d directory exists
+    - name: TEMPLATE_DEF | Ensure template tmpl.d directory exists
       file:
         path: "{{ item }}"
         state: directory
@@ -10,7 +10,7 @@
         - "{{ consul_conf_template_tmpld_dir }}"
         - "{{ consul_templates_dir }}"
 
-    - name: Create template configuration
+    - name: TEMPLATE_DEF | Create template configuration
       template:
         src: "template.hcl.j2"
         dest: "{{ consul_conf_template_tmpld_dir }}/{{ consul_service_template_name }}.hcl"
@@ -20,7 +20,7 @@
       notify:
         - reload consul-template
 
-    - name: Copy ctmpl source
+    - name: TEMPLATE_DEF | Copy ctmpl source
       template:
         src: "{{ consul_service_template_source_j2 }}"
         dest: "{{ consul_templates_dir }}/{{ consul_service_template_name }}.ctmpl"

@@ -8,7 +8,7 @@
   tags: agent
 
 - name: configure agent
-  import_tasks: agent.yml
+  import_tasks: configure_agent.yml
   tags: agent
 
 - name: install specified consul-template

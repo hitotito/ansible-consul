@@ -30,7 +30,7 @@
 # Current Limitation
 #   - http check and script cannot be mix
 #   - cannot have multiple checks per service using this task list
-- name: install consul service definition
+- name: SERVICE | Install consul service definition
   block:
   - name: ensure conf directory exists
     file:
@@ -40,7 +40,7 @@
       owner: "{{ consul_user }}"
       group: "{{ consul_group }}"
 
-  - name: create service definition
+  - name: SERVICE | Create service definition
     template:
       src: "service.json.j2"
       dest: "{{ consul_conf_agent_dir }}/{{ consul_service_name }}.json"

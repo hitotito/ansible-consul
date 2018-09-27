@@ -1,5 +1,5 @@
 ---
-- name: Copy consul-agent configuration file
+- name: CONFIG | Copy consul-agent configuration file
   template:
     src: "agent.json.j2"
     dest: "{{ consul_conf_agent_dir }}/agent.json"
@@ -9,7 +9,7 @@
   notify:
     - restart consul-agent
 
-- name: Copy gossip encryption configuration file
+- name: CONFIG | Copy gossip encryption configuration file
   when: consul_gossip_encryption_key is defined
   template:
     src: "encryption.json.j2"
@@ -20,7 +20,7 @@
   notify:
     - restart consul-agent
 
-- name: Copy consul-ui service
+- name: CONFOFG | Copy consul-ui service
   when: _consul_is_server and consul_server_ui
   include_tasks: service.yml
   vars:

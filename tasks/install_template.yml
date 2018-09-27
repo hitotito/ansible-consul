@@ -1,13 +1,13 @@
 ---
-- name: Reinstall consul-template
+- name: TEMPLALTE | Reinstall consul-template
   when: hostvars[inventory_hostname].ansible_local.hitotito_consul.consul_template.version != consul_template_ver or consul_template_force_reinstall
   block:
-    - name: Remove old binary install
+    - name: TEMPLATE | Remove old binary install
       file:
         path: "{{ consul_bin_dir }}/consul-template"
         state: absent
 
-    - name: Create consul directory structure
+    - name: TEMPLATE | Create consul directory structure
       with_items:
         - "{{ consul_bin_dir }}"
         - "{{ consul_conf_template_dir }}"
@@ -20,14 +20,14 @@
         owner: "{{ consul_user }}"
         group: "{{ consul_group }}"
 
-    - name: Download consul-template
+    - name: TEMPLATE | Download consul-template
       get_url:
         url: "{{ consul_template_url }}"
         dest: "/tmp/{{ consul_template_archive }}"
         checksum: "{{ consul_template_checksum }}"
         mode: 0640
 
-    - name: Unarchive consul-template
+    - name: TEMPLATE | Unarchive consul-template
       unarchive:
         remote_src: yes
         src: "/tmp/{{ consul_template_archive }}"
@@ -38,12 +38,12 @@
       notify:
         - restart consul-template
   always:
-    - name: Cleanup
+    - name: TEMPLATE | Cleanup
       file:
         path: "/tmp/{{ consul_template_archive }}"
         state: absent
 
-- name: Install consul-template.hcl configuration file
+- name: TEMPLATE | Install consul-template.hcl configuration file
   template:
     src: "consul-template.hcl.j2"
     dest: "{{ consul_conf_template_dir }}/consul-template.hcl"
@@ -53,7 +53,7 @@
   notify:
     - restart consul-template
 
-- name: Install consul-template systemd service file
+- name: TEMPLATE | Install consul-template systemd service file
   template:
     src: "consul-template.service.j2"
     dest: "{{ consul_systemd_dir }}/consul-template.service"
@@ -63,7 +63,7 @@
   notify:
     - restart consul-template
 
-- name: create symlink
+- name: TEMPLATE | create symlink
   with_items:
     - { src: "{{ consul_bin_dir }}/consul-template", dest: "{{ consul_os_install_dir }}/consul-template"}
     - { src: "{{ consul_systemd_dir }}/consul-template.service", dest: "{{ consul_os_systemd_dir }}/consul-template.service"}
@@ -75,7 +75,16 @@
   notify:
     - restart consul-template
 
-- name: Enable systemd service
+- name: TEMPLATE | Copy consul-template service definition
+  include_tasks: service.yml
+  vars:
+    consul_service_name: "consul-template"
+    consul_service_tags: ["consul-template"]
+    consul_service_check: "script"
+    consul_service_check_name: "systemd is active"
+    consul_service_check_script_args: ["{{ consul_bin_dir }}/check_systemd_active.py", "consul-template.service"]
+
+- name: TEMPLATE | Enable systemd service
   systemd:
     name: consul-template
     daemon_reload: yes

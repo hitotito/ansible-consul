@@ -1,18 +1,18 @@
 ---
-- name: reinstall consul
+- name: INSTALL | Reinstall consul
   when: hostvars[inventory_hostname].ansible_local.hitotito_consul.consul.version != consul_ver or consul_force_reinstall
   block:
-    - name: remove old binary install
+    - name: INSTALL | Remove old binary install
       file: 
         path: "{{ consul_bin_dir }}/consul"
         state: absent
 
-    - name: install unzip
+    - name: INSTALL | Install unzip
       apt:
         name: zip
         state: present
 
-    - name: create consul directory structure
+    - name: INSTALL | Create consul directory structure
       with_items:
         - "{{ consul_bin_dir }}"
         - "{{ consul_conf_agent_dir }}"
@@ -25,14 +25,14 @@
         owner: "{{ consul_user }}"
         group: "{{ consul_group }}"
 
-    - name: download consul
+    - name: INSTALL | Download consul
       get_url:
         url: '{{consul_url}}'
         dest: "/tmp/{{consul_zip}}"
         checksum: '{{consul_checksum}}'
         mode: 0644
 
-    - name: unarchive consul
+    - name: INSTALL | Unarchive consul
       unarchive:
         remote_src: yes
         src: /tmp/{{consul_zip}}
@@ -43,12 +43,12 @@
       notify:
         - restart consul-agent
   always:
-    - name: cleanup
+    - name: INSTALL | Cleanup
       file:
         path: /tmp/{{consul_zip}}
         state: absent
 
-- name: install consul-agent systemd service file
+- name: INSTALL | Install consul-agent systemd service file
   template:
     src: "consul-agent.service.j2"
     dest: "{{ consul_systemd_dir }}/consul-agent.service"
@@ -58,7 +58,7 @@
   notify:
     - restart consul-agent
 
-- name: create symlink
+- name: INSTALL | Create symlink
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -72,7 +72,7 @@
   notify:
     - restart consul-agent
 
-- name: Copy check scripts
+- name: INSTALL | Copy check scripts
   copy:
     src: "{{ item }}"
     dest: "{{ consul_bin_dir }}"
@@ -82,7 +82,7 @@
   with_items:
     - "check_systemd_active.py"
 
-- name: Enable consul-agent systemd service
+- name: INSTALL | Enable consul-agent systemd service
   systemd:
     name: consul-agent
     state: started
